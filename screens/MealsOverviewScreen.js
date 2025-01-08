@@ -1,15 +1,26 @@
 import { FlatList, View, StyleSheet } from "react-native";
-import { MEALS } from "../data/dummy-data";
+import { MEALS, CATEGORIES } from "../data/dummy-data";
+import { useEffect } from "react";
 import MealItem from "../components/MealItem";
 
-function MealsOverviewScreen({ route }) {
+function MealsOverviewScreen({ route, navigation }) {
   const catId = route.params.categoryId;
-  const catTitle = route.params.categoryTitle;
+ 
 
   // Kategoriye göre filtreleme işlemi
   const displayedMeals = MEALS.filter((mealItem) => {
     return mealItem.categoryIds.indexOf(catId) >= 0;
   });
+
+  useEffect(() => {
+    const catTitle = CATEGORIES.find((category) => category.id === catId).title;
+    navigation.setOptions({
+      title: catTitle,
+    });
+   
+  }, [catId,navigation]);
+
+
 
   // Her bir öğeyi render eden fonksiyon
   function renderMealItem(itemData) {
@@ -26,7 +37,6 @@ function MealsOverviewScreen({ route }) {
     return <MealItem {...mealItemProps} />;
   }
 
- 
   return (
     <View style={styles.container}>
       <FlatList
