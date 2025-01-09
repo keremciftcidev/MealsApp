@@ -1,9 +1,26 @@
 import { View, Text, Pressable, Image, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-function MealItem({ title, imageUrl, duration, complexity, affordability }) {
+function MealItem({
+  id,
+  title,
+  imageUrl,
+  duration,
+  complexity,
+  affordability,
+}) {
+  const navigation = useNavigation();
+
+  function selectMealItemHandler() {
+    navigation.navigate("MealDetail", {
+      mealId: id,
+    });
+  }
+
   return (
     <View style={styles.mealItem}>
       <Pressable
+      onPress={selectMealItemHandler}
         style={({ pressed }) => (pressed ? styles.buttonPressed : null)}
       >
         <View style={styles.innerContainer}>
@@ -36,9 +53,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
   },
-  buttonPressed:{
-    opacity:0.5,
-    
+  buttonPressed: {
+    opacity: 0.5,
   },
   innerContainer: {
     borderRadius: 8,
